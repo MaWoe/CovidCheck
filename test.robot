@@ -14,18 +14,18 @@ Check Result
     Wait Until Page Contains Element  xpath://input[@id="OrderNumber"]
 
     Input Text  xpath://input[@id="OrderNumber"]    ${orderNo}
-    Input Text  xpath://input[@id="date"]           ${birth}}
+    Input Text  xpath://input[@id="date"]           ${birth}
     Input Text  xpath://input[@id="ZipCode"]        ${zipCode}
 
     Submit Form
 
-    Wait Until Page Contains Element  xpath://h1[text() = "Ihr Ergebnis für Ihren Auftrag "]
+    Wait Until Page Contains Element  xpath://h1[contains(text(), "Ihr Ergebnis")]  timeout=10 seconds
     Wait Until Page Contains Element  xpath://div[contains(@class, "well")]
     ${text}=  Get Text  xpath://div[contains(@class, "well")]
 
     Close Browser
 
-    Append To File  result.txt  ${text}
+    Create File  log/result.txt  ${text}
 
 *** Keywords ***
 Remove Popup

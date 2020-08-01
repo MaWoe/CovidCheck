@@ -2,7 +2,7 @@
 
 BASE=$(dirname $(realpath $0))
 OUTPUT_DIR="$BASE/log";
-CURRENT_RESULT="result.txt"
+CURRENT_RESULT="log/result.txt"
 LOG="log.html"
 
 if [ -z $1 ] || [ -z $2 ] || [ -z $3 ]; then
@@ -20,7 +20,6 @@ else
     mkdir ${OUTPUT_DIR}
 fi
 
-rm ${CURRENT_RESULT}
 echo >> ${LOG}
 date +'<h2>%Y-%m-%d %H:%M:%S</h2>' >> ${LOG}
 echo "<p>" >> ${LOG}
