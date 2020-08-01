@@ -14,8 +14,10 @@ Check Result
     Wait Until Page Contains Element  xpath://input[@id="OrderNumber"]
 
     Input Text  xpath://input[@id="OrderNumber"]    ${orderNo}
-    Input Text  xpath://input[@id="date"]           ${birth}
+    Execute Javascript  document.getElementById('date').value = '${birth}'
     Input Text  xpath://input[@id="ZipCode"]        ${zipCode}
+
+    Capture Page Screenshot
 
     Submit Form
 
