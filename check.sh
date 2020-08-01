@@ -1,5 +1,6 @@
 #!/bin/bash
 
+FOUND_RESULT_LOCK="foundResult.lock"
 BASE=$(dirname $(realpath $0))
 OUTPUT_DIR="$BASE/log";
 CURRENT_RESULT="log/result.txt"
@@ -14,13 +15,18 @@ fi
 
 cd ${BASE}
 
+if [ -f ${FOUND_RESULT_LOCK} ]; then
+  echo "Result has already been determined. Stopping here"
+  exit 1
+fi
+
 if [ -d ${OUTPUT_DIR} ]; then
     rm -rf ${OUTPUT_DIR}/*
 else
     mkdir ${OUTPUT_DIR}
 fi
 
-echo >> ${LOG}
+echo > ${LOG}
 date +'<h2>%Y-%m-%d %H:%M:%S</h2>' >> ${LOG}
 echo "<p>" >> ${LOG}
 robot --outputdir ${OUTPUT_DIR} -v orderNo:$1 -v birth:$2 -v zipCode:$3 ./test.robot
@@ -30,6 +36,7 @@ MATCHES=$(grep -oE 'Ergebnis: *[^ ]+' ${CURRENT_RESULT});
 if [ $? == 0 ] ; then
     RESULT=$(echo ${MATCHES} | sed -r 's/^.*Ergebnis: *([^ ]+).*$/\1/g')
     exitCode=0
+    echo ${RESULT} > ${FOUND_RESULT_LOCK}
 else
     RESULT="No result yet"
     exitCode=1
@@ -38,4 +45,5 @@ echo ${RESULT} >> ${LOG}
 echo "</p>" >> ${LOG}
 
 echo "Result: $RESULT"
+
 exit ${exitCode};
